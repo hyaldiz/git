@@ -1,0 +1,207 @@
+	
+	
+	
+	
+		-----------------------------------------------------------------GIT------------------------------------------------------------
+	
+	num-)	  (Ana başlıklar)
+	-->	  (Başlığın konusuna dair açıklamalar) (NOT:Başlıklara göre 1.0'dan başlar)
+	*  	  (Alt Başlıklar)
+	*-*	  (Komut isimleri)
+	--	  (Ek açıklamalar)
+	****x**** (Önemli açıklamalar x:NOT,--> vb. olabilir.)
+	
+	
+		*-* git config --global user.email "you@example.com"
+  		*-* git config --global user.name "Your Name"
+	
+GİRİŞ
+
+		*-* git init
+		*-* git status
+		*-* git add .{bütün değişiklikleri staging area'ya aktarır.}
+		*-* git commit isteğe_bağlı_argüman (-m argümanı geçilerek "" içerisine commit yazılabilir.(! kısa bir commit atılacaksa kullanılabilir.))
+		*-* git log (atılan commit'leri gösterir.)
+		
+		NOT:git log'da commit'lerin yanında çıkan numaralara commit hash denir ve commit'in unique id'sini belirtir.
+	
+		
+1-)BRANCHING(DALLANMALAR)
+
+		-->Master Branch'in clean olması istenir.
+		-->Branch oluşturunca son kısımdaki brannch'in başına kopyalanıyor.
+	
+	*Branching Strategy
+		
+		*-* git branch -l (branchleri listeler.)
+		    git branch --list (yukarıda belirtilen komutla aynı.)
+		    	-- (*) işareti aktif olan branchleri gösterecektir.
+		    		
+		*-* git branch (branch oluşturur.)
+		
+		*-* git checkout branchname (branchler arası geçiş sağlayacaktır.)
+		*-* git log --onelinne (atılan commitleri daha temiz bir şekilde görmemizi sağlar.)
+		
+		-->Branch oluşturulan konumda önem arz etmektedir, ona göre dosyalar branchlere kopyalanacaktır (açıklama 1.1'de belirtilen açıklama)
+		-->Master branch ve web branch mevcut örn;web branch'te dosyalar açılıyor commit'ler atılıyor sonra master branch'e geçiliyor bu dosyalar ve commit'ler
+		master branch'te gözükmeyecektir.
+		
+		    
+		    
+		    
+	*Merge Strategy
+		
+		*-* git merge branchismi (Bulunduğumuz branch'e web branch'ini merge et.)
+			web te atılan commitler tamamen aynı şekilde aktarılır.
+		*-* git a dog (Daha ayrıntılı ve sade bir şekilde açıklamalar yapacak.)
+			git log --al --decorate --oneline --graph (stackoverflow vb.'den bakabilirsin.)
+			
+		NOT: git log'ta detay sayfasında commitler merge sırasına göre listelenmez commitlerin atılma zamanına yani atılma sırasına göre listelenir.Ayrıca git log da merge edilen commitler belirtiliyor.
+			    
+		    
+	*Delete Branch
+	
+		*-* git branch -d web (web branch'ini siler.)
+		    git branch --delete web
+	
+		    
+	*Head Kavramı
+		
+		-->Üzerinde bulunan branch'i ve atılan son commit'i gösterir.
+		-->Head aslıda bir pointer(gösterici).
+		
+		NOT: git log web (web branch'indeki commit'ler bu şekildede listelenebilir.)
+		     	    
+		    (HEAD->web,master) web ve master aynı yeri gösteriyor ama ikisinden birinde
+		    commit atılırsa aynı yeri göstermeyecekler. Alt taraftaki commitlerde (master)
+		    veya herhangi bir branch yazabilir, bu o kısma kadar aynı commitleri içerdiklerii belirtir ama önceki açıklama dikkate alınmalı commit atılırsa işler değişecek örnneğinn masterde commit attık master'in HEAD pointeri değişecek ve web brachinde (master) göstergesi kaybolacaktır.
+		    
+		NOT: merge işleminde commitle commitler birleşiyor ya birleşimden oluşan yenicommite hash atanır.
+		
+		NOT: git log a dog (bu komut iyi bir komut :) görsel olarak incelememizi sağlıyor.) --oneline yazmazsak ayrıntılı bir bilgi verir.
+		
+		****NOT****: Branchleri silersek merge edilmiş halleri kalıyor git log adog'taki senaryo gitmiyor sadece branchleri siliyor. Önemli bir detay sakı proje bitiminde master branch'e merge etmeyi unutma.
+		
+		
+	*Merge Türleri
+	
+		-->Fast Forward Merge; Masterde commit atılmayacak adam diğer branchteki commitler master branch'e merge yapılırsa F.F.M olur. Head pointer sadece ileri taşınır ve 2 branch'te aynı commit'i işaret ettiğinden HEAD(master,branch) olur. git log adog komutunda da lineer bir şekilde senaryo oluşur. ****ELEKTRİK AKIMI GİBİ DÜŞÜN TEK YOL İZLEYECEK!!! ayrıca git log adog'ta merge yaptığı yazmıyor kendimiz isimlendirme yaparak görebiliriz!!!****
+		
+		*-* git merge --help (kullanılabilecek komutları listeler.)
+		*-* git merge --no-ff (F.F.M yapma) git log adog'ta farklı dallara ayrılmış senaryo gözükecektir. F.F.M mü yoksa değilmi tercih bizim.
+		
+		-->3 Ways Merge; Bu zaten bildiğimiz bişey master'da araya commit atılırsa 3.W.M olur.
+		    
+		    
+		    
+	*Conflicts & Rebase
+	
+	-->Conflict(anlaşmazlık,çatışma) durumuna denir.
+		2 farklı branch'te aynı dosyaların aynı satırında değişiklik yapılıyor. Git hangisini alacağı konusunda kafası karışıyor ve Conflict oluşuyor.
+		
+		*-* git status -s{short form}(daha kısa bir status.)
+		****NOT****: ister 2 sini al ister tek tek ayrıca tekrar merge etmeye gerek yok conflict'i çözdükten sonra değişiklik yapıldığı için git add yap ve commit at kendi merge ediyor.
+		
+	-->Rebase daha clean bir senaryo sunar (tek hat)    
+	
+		*-* git rebase master (ilk önce master commitleri sıra sıra eklenecek sonra bulunduğumuz branchteki commitler sıra sıra eklenir.REBASE YAPTIKTAN SONRA MERGE ETMEYİ UNUTMA!!!)
+		****NOT****: Fast Forward Merge yapılacaktır.
+		
+	*Allias
+	
+		*-* git config alias.adog "log --all --decorate --oneline --graph" (.git  bulamayınca diğer dosyalarda arıyor.
+		
+		*-* git config --global alias.adog "log --decorate --oneline --graph" (global düzeyde etkili olacak c:user dosyasının ordaki dosyada ****NOT***:Bu huseyin kullanıcısı için global yerine system dersek herşey için bunu alır.)
+		
+		*-* git config -l (yapılan ayarları gösterecektir.(Allias'la alakasız bir komut.))
+		
+	
+	*Gitignore
+	
+	-->İstenilen dosyaları görmezden gelecek.(staging area'ya dahil edilmesini istemediğimiz dosyalar.)
+	   Projenin içinde .gitignore adında bir text dosyası oluşturulur. bu dosyanın içine main.c yazarsak main.c artık git tarafından kontrol edilmez.
+			
+		****NOT****: .gitignore dosyası staging area'ya aktarılabilir ve commit atılabilir.
+		****NOT****: .gitignore dosyasının içine (*.dat) dersek .dat uzantılı dosyaları git takip etmeyecektir. (!b.dat) b.dat gözükecek çünkü başında ! var. #'de C'deki gibi açıklama yazmak için.
+			
+		*(Görmezden Geliyor), !(Görmezden Gelmiyor)
+			
+		****NOT****: Daha önceden veri tabanına alınmış bir dosyayı .gitignor'a eklersek DOSYA TAKİP EDİLMEYE DEVAM EDER. BU DOSYANIN TAKİP EDİLMESİNİ KAPATMAK İÇİN *-* git update-index --assume-unchanged time.txt (time.txt .gitignor'a yazıldıysa önceden takip ediliyorsa artık takip edilmeyecek.), takip altına almasını istiyorsakta *-* git update-index --no-assume-unchanged time.txt (dosya .gitignor'a yazılsa bile tekrar takip altına alınacaktır.)
+		    
+		
+	*Gitdiff
+	
+	-->2 Farklı versiyon arasındaki farklılıkları gormemizi sağlayan komut.
+		
+		*-* git diff 1.commit_hash 2.commit_hash (versiyonlar arasındaki değiştirilen yerleri gosterir. Boilukları bile alıyor. Birde enter satır bitiminde enter yapmak gerekiyor yoksa satırın bittiğini anlamıyor. 1'le 2.commit arasındaki farkı verir. -'ler old version +'lar new version'ı ifade edeyor.)  
+			
+		****NOT****: commitlerin hash'leri git log --oneline komutuyla alınabilir.	  
+	    	****NOT****: git diff sıralamasına dikkat et yani eski commitle yeni commitin farkı ne bunun için once eski commit hash'i daha sonra yeni commit'in hash'ini yaz.
+	    	****NOT****: neden işlemler yapıldıktan sonra newline(enter) yapmalıyız sebebi git dstır bazlı çalışıyor ve enter yapılmazsa karmaşıklığa neden oluyor.
+		    	
+	    	*-* git log -p (tüm commitler arasındaki farkı görebiliyoruz.)
+		    		****NOT****: git diff komutu (argümansız kullanım) değişiklikler staging area'ya aktarılmadan dosyalar arasındaki farkı görmemizi sağlar. Bu sebepten dolayı farklı area'lardaki dosyalarda yapılan değişiklikler görünmeyebilir dikkat etmek lazım.
+	    	*-* git diff --cached staging areadaki commitler arasındaki fark.		
+		    
+		    
+	*Restore
+	
+		*-* git restore --staged a.txt (a.txt'yi unstaged duruma getirir working directory'den çıkarır, yani commit edilecek dosyalar arasından çıkarır(untracked(takip edilmeyen) hale gelir.).)
+		*-* git restore a.txt (değişiklikleri iptal eder.)
+				****NOT****: Working directory'de çok dosya var mesela 10 tane ama 9'u track edilecek sanırım restore kalan dosyanın takibini yapabilmek için daha basit bir strateji sunuyor diye düşünüyorum.
+					     Eğer restore işlemlerinde yapılan işlemler geri gelmezse --staged yapıp tekrar restore et!!!(nasıl anlarız git add'e düşmüyorsa değişiklikleri görmüyor demektir.)
+
+
+	*Commitler Arası Yolculuk
+			
+		*-* git checkout commit_hash (istenilen commit'e geçer ve working directory'deki dosyalar değişir;o committeki mevcut dosyalar kalır sadece)
+		*-* git checkout master (eski haline gelir.(FARKLI BRANCHTEYSEK DURUM NASIL BILMIYORUM))
+				****NOT****: Atılan commitler araya eklenmez!!! git checkout master yaptığımızda commit kaybedilebilir diye uyarı veriyor!!! Atılan commit'in kaybolmasını istemiyorsak aşağıdaki komutu kullan
+		*-* git branch istenilen_branch_adi commit_hash (commit yeni bir branch oluşutularak o branch'e eklenmiş olur.)(GEÇMİŞE GİDİP COMMIT ATMA DURUMU)
+			
+
+		!!!!!!!!!
+		****NOT****: Aşağıda listelenen komutlar çok tehlikelidir ve geri dönüşü olmayan kayıplara yol açabilir.
+			
+		*-* git reset --hard  commit_hash(dönülecek commit'in hash'i) (istenilen commit'e döner ve ondan sonrasını yok sayar)
+		*-* git reset --soft  commit_hash(dönülecek commit'in hash'i) (istenilen commit'e döner ama sonrasıdaki commitler staging areada kalır ama bizi ilgilendirmez.(BELİRLİ BİR SÜRE SONRA STAGING AREA'DAN KAYBOLABİLİRLER KESİN BİLGİ DEĞİL!!!))
+		*-* git reset --mixed commit_hash(dönülecek commit'in hash'i) (istenilen commit'e döner, dosyalar working directory'de kalır ama staging area'ya aktarılmaz. Bir şansımız daha var yani bu değişiklikleri ekleyip yolumuza devam edebiliriz.)
+	
+	
+	*Stash
+	
+	--> Mesela müşteriye giden kodda bir sıkıntı çıktı bizde başka bir kodla uğraşıyoruz yani elimizde 2 iş var acil işi halledip uğraştğımız kodu zulalarız ve işimiz bittikten sonra stash'ten zulaladığımız kodu alıp işimize devam ederiz.
+	
+		*-* git stash (En son attığımız commit'ten sonra yapılan değişiklikler stash edilecek zulalanacak ve dosyada yapılan değişiklikler gözükmeyecek!!!)
+		*-* git stash list (kaydedilen değişiklikleri gösterir.)
+		*-* git stash apply üstteki_kouttan alınan(stash{0} vb. kimlik) (değişiklikler gelir. git add'le staging areaya aktarırız ve takip edilmeye başlarlar.)
+		*-* git stash save "aciklama" (zulalanacak değişiklikler için açıklama eklememizi sağlar.)
+		
+		****NOT****: stash stack mantığıyla çalışır.
+
+	--> Stashlerle işimiz bittikten sonra list'ten çıkartılmaları önerilir.
+			
+		*-* git stash drop (stack mantığıyla last in first out shash'i çıkartacaktır.)
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    
+		    git config --global
+		    git config --system
