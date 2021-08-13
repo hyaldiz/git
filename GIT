@@ -182,6 +182,74 @@ GİRİŞ
 	--> Stashlerle işimiz bittikten sonra list'ten çıkartılmaları önerilir.
 			
 		*-* git stash drop (stack mantığıyla last in first out shash'i çıkartacaktır.)
+		
+		
+	*Cherry (Commit Kopyalama)
+	
+	--> Kendimize uygun olann şeyi seçip yapacaz. Bir branchteki commit'i başka bir branch'teki commit'e kopyalama işlemi.
+
+		*-* git cherry-pick commit_hash (kopyalamayı yapacağın branch'e geç ve mesela masterdeki commit'in hash'ini gir ve o commit'i kopyala)
+	
+	*Github
+	
+	--> Readme .ignore gibi dosyalar oluşturursan bunları githubtada seç yoksa push,pull ederken farklı algılar bu durum aşağıda açıklanacaktır.
+	--> Repository'den repository linkini al.
+
+		*-* git push repo_linki branch_ismi (branch ismine dikkat et github'ta main burada master)
+		*-* git remote add takma_isim(genelde origin adı verilir) repo_linki (linke alias veririz sürekli linki yazmak zorunda kalmayız.)
+		*-* git remote rename eski_takma_isim yeni_takma_isim (alias'ın ismini değiştirmeye yarar)
+		*-* git remote remove takma_isim (alias'ı silmeye yarar)
+
+		****NOT****: Verilen alias git push'ta repo_linki yerine kullanılır.
+		****NOT****: Eğer github üzerinden readme vb. dosyalar eklersen önce pull et sonra push yap direk push yapmaya kalkarsan uyarı verecektir.
+			     Grup çalışmalarında diğer kişiler push yaptığında repo değişir o yüzden pull yap sonra push yap.
+		****NOT****: Github üzerinden de dosya oluşturup commit atılabilir.
+
+		*-* git remote --verbose (remote repoları listeler)
+
+		*-* git pull repo_linki branch_ismi (remote repo'dan commitleri belirtilen branch'e çeker)
+
+
+		*-* git clone repodan_alınan_link (projeyi belirtilen yere clone'lar)
+
+	*fork & pull request
+
+	--> Başkasının reposunu iyleştirebileceğimizi veya düzeltebileceğimizi düşünürsek "fork" atarız ve proje bizim gir repomuzada düşer.
+	--> Proje üzerinde yapılan değişiklikleri karşı tarafa bildirmek için pull request yaparız.
+
+	*Semantik Versiyonlama (Local Repository'de)
+
+		*-* git tag -a v1.0.0 -m "First TAG" (git log --online tag gözükecektir.)
+		*-* git tag (sadece tagları gösterir)
+
+		*-* git tag v1.1.0-lw (light weight tag'e bir açıklama vermiyoruz üsttekinden farkı bu)
+		*-* git show v1.1.0-lw (tag ile ilgili bilgileri verecektir.)
+
+		****NOT****: ilk olarak lw ver takımla konuştuktan sonra anotiated verilebilir.
+
+		*-* git tag --delete v1.1.0-lw (tag'i siler.)
+
+		*-* git tag v0.1.0 commit_hash (istenilen commit'e hash atar.)
+		
+	--> versiyon tagleri ile commitler arası yolculuk yapılabilir!!!
+
+		*-* git checkout v0.1.0 (belirtilen tag hangi commit için yapılmışsa o commit'e geçer.)
+
+	*Semantik Versiyonlama (Remote Repository'de)
+		
+		*-* git push repo_linki branch_ismi mevcut_tag (olmayan bir tag girilirse hata verecektir.)
+
+		*-* git push repo_linki -d mevcut_tag (remote repo(github'dan) tag'i siler local'de hala tag gözükür local'deki delete ile silebilirsin.)
+	
+	*Amend İşlemleri
+
+	--> Son atılan commit'in açıklamasını düzeltmek için kullanılır.
+
+		*-* git commit --amend -m "commit aciklamasi" (son commit'e yeni açıklamayı ekler. )
+		****NOT****: githubda yapılan değişikliği güncellemek için 
+			     *-* git push repo_linki branch_ismi --force
+
+		*-* git rebase -i HEAD~5 (son 5 commit'i gösterir. (editör açılması lazım!))
 		    
 		    
 		    
